@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生日快乐！</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #87CEFA;
+            font-family: 'Arial', sans-serif;
+        }
+
+        h1 {
+            font-size: 4em;
+            color: #FF69B4;
+            text-align: center;
+            margin-top: 50px;
+            text-shadow: 2px 2px 4px #000;
+        }
+
+        #message {
+            font-size: 2em;
+            color: #FFD700;
+            text-align: center;
+            margin-top: 20px;
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        .balloon {
+            position: absolute;
+            bottom: -150px;
+            width: 100px;
+            height: 150px;
+            background-color: #ffa07a;
+            border-radius: 50% 50% 50% 50%;
+            opacity: 0.8;
+            animation: float 6s ease-in-out infinite;
+            cursor: pointer;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-400px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 30px;
+            background-color: #ff69b4;
+            animation: fall 5s infinite;
+            z-index: 2;
+        }
+
+        @keyframes fall {
+            from {
+                transform: translateY(-100vh) rotate(0);
+            }
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Happy Birthday!</h1>
+    <div id="message">🎂</div>
+
+    <script>
+        // 气球的颜色数组
+        const balloonColors = ['#FF69B4', '#FFB6C1', '#FF6347', '#FFD700', '#7B68EE', '#32CD32'];
+        
+        // 创建气球
+        function createBalloon() {
+            const balloon = document.createElement('div');
+            balloon.className = 'balloon';
+            balloon.style.backgroundColor = balloonColors[Math.floor(Math.random() * balloonColors.length)];
+            balloon.style.left = Math.random() * 100 + 'vw';
+            balloon.style.animationDuration = (Math.random() * 3 + 4) + 's'; // 随机动画时间
+            document.body.appendChild(balloon);
+
+            // 气球点击爆炸效果
+            balloon.addEventListener('click', () => {
+                balloon.style.transition = 'transform 0.3s ease';
+                balloon.style.transform = 'scale(0)';
+                setTimeout(() => balloon.remove(), 300);
+            });
+
+            // 气球移出屏幕后移除
+            balloon.addEventListener('animationend', () => {
+                balloon.remove();
+            });
+        }
+
+        // 定时生成气球
+        setInterval(createBalloon, 1000);
+
+        // 创建彩带
+        function createConfetti() {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.backgroundColor = balloonColors[Math.floor(Math.random() * balloonColors.length)];
+            confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            document.body.appendChild(confetti);
+
+            // 彩带移出屏幕后移除
+            confetti.addEventListener('animationend', () => {
+                confetti.remove();
+            });
+        }
+
+        // 定时生成彩带
+        setInterval(createConfetti, 300);
+
+        // 逐字显示祝福信息
+        const message = "郁老师，生日快乐！愿世界美好与你环环相扣！";
+        let i = 0;
+        function typeMessage() {
+            if (i < message.length) {
+                document.getElementById("message").innerHTML += message.charAt(i);
+                i++;
+                setTimeout(typeMessage, 150);
+            }
+        }
+        window.onload = typeMessage;
+    </script>
+</body>
+</html>
